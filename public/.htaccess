@@ -1,0 +1,13 @@
+# Apache: send every URL under /app/ that isn't a real file (like
+# /app/chalets/12) to /app/index.html so React Router can handle it
+# client-side. Deployed at shleeh.com/app/, not the domain root — if that
+# subpath ever changes, update RewriteBase here AND vite.config.js's
+# BASE_PATH AND App.jsx's <Router basename>.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /app/
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /app/index.html [L]
+</IfModule>

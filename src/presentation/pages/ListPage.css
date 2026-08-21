@@ -1,0 +1,13 @@
+/* Bottom padding kept small — the Footer already adds its own 70px
+   margin-top (Footer.css) for separation from page content. Stacking a
+   large bottom padding here on top of that created a ~180px dead gray gap
+   above the footer, worst on pages with few results. */
+.list-page { padding: 40px 0 24px; }
+.list-page .section-title { margin-bottom: 4px; }
+.list-page .section-heading-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+.list-page .view-all-link { font-size: 14px; font-weight: 600; color: var(--color-primary); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+
+.favorites-list { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+
+.list-load-more { display: flex; justify-content: center; margin-top: 28px; }
+.list-load-more .btn { min-width: 160px; }

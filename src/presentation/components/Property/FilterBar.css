@@ -1,0 +1,91 @@
+.filter-bar { padding: 20px; margin-bottom: 28px; }
+/* Flex instead of an equal-fraction grid so individual fields can claim
+   different amounts of space — Price (two number inputs side by side) and
+   Dates (a full "12 Aug – 18 Aug" range label) need noticeably more room
+   than Governorate's short dropdown, and each field still wraps to its own
+   line on narrow screens since its basis won't fit two-per-row. */
+.filter-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: end; }
+.filter-row .form-group { flex: 1 1 180px; min-width: 0; margin-bottom: 0; }
+.filter-row .filter-field-dates { flex: 1.6 1 240px; }
+.filter-row .filter-field-price { flex: 1.6 1 260px; }
+
+.price-range-inputs { display: flex; align-items: center; gap: 8px; }
+.price-range-inputs .form-input { width: 0; flex: 1; min-width: 90px; }
+
+.filter-dates-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: #fff; cursor: pointer; text-align: start;
+    color: var(--color-text-primary); font-size: 14px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.filter-dates-btn i { color: var(--color-primary); flex-shrink: 0; }
+.filter-dates-modal { max-width: 400px; }
+/* Always its own full-width row — the row above is flex-wrap now (not a
+   fixed grid), so without this, actions would just tack onto the end of
+   whichever line still had room, sitting flush against Price/Dates at
+   plenty of in-between widths instead of clearly separated. */
+.filter-actions { flex: 1 1 100%; display: flex; gap: 10px; flex-wrap: wrap; }
+.filter-actions .btn { flex: 1 1 140px; }
+
+.filter-services-row { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--color-border-light); }
+.filter-services-label { display: block; font-size: 13px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 8px; }
+.filter-service-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-service-chip {
+    border: 1px solid var(--color-border-light);
+    background: #fff;
+    color: var(--color-text-secondary);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.filter-service-chip:hover { border-color: var(--color-primary); }
+.filter-service-chip.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+}
+
+/* ── "More filters" trigger + popup ─────────────────────────────────── */
+.filter-more-btn { position: relative; display: inline-flex; align-items: center; gap: 8px; }
+.filter-more-count {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 18px; height: 18px; padding: 0 5px;
+    border-radius: 999px;
+    background: var(--color-primary); color: #fff;
+    font-size: 11px; font-weight: 700;
+}
+
+.filter-more-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(8, 38, 89, 0.45);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+}
+.filter-more-modal {
+    position: relative;
+    background: #fff;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 520px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 24px;
+}
+.filter-more-close {
+    position: absolute; top: 14px; inset-inline-end: 14px;
+    width: 32px; height: 32px; border-radius: 50%;
+    border: none; background: var(--color-bg-tertiary);
+    color: var(--color-text-secondary); font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+}
+.filter-more-close:hover { background: var(--color-border-light); }
+.filter-more-title { margin: 0 0 18px; font-size: 17px; font-weight: 800; color: var(--color-secondary); }
+.filter-more-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 4px; }
+.filter-more-footer { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
+@media (max-width: 480px) {
+    .filter-more-modal { padding: 20px 16px; }
+}

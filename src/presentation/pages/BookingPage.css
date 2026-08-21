@@ -1,0 +1,106 @@
+.booking-page { padding: 36px 0 24px; max-width: 640px; margin: 0 auto; }
+.booking-page .card { padding: 28px; }
+.booking-summary { display: flex; gap: 14px; align-items: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--color-border-light); }
+.booking-summary img { width: 76px; height: 60px; object-fit: cover; border-radius: var(--radius-sm); }
+.booking-summary h3 { margin: 0 0 4px; font-size: 16px; }
+.booking-summary p { margin: 0; font-size: 13px; color: var(--color-text-muted); }
+
+.booking-step-title { display: flex; align-items: center; gap: 10px; margin: 26px 0 14px; }
+.booking-step-title:first-of-type { margin-top: 0; }
+.booking-step-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--color-primary); color: #fff;
+    font-size: 12.5px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.booking-step-title h2 { font-size: 16px; margin: 0; color: var(--color-secondary); }
+
+.date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.daytype-toggle { display: flex; gap: 10px; margin-bottom: 20px; }
+.daytype-toggle button { flex: 1; padding: 10px; border-radius: var(--radius-md); border: 1.5px solid var(--color-border-light); background: #fff; font-weight: 600; font-size: 13.5px; color: var(--color-text-secondary); transition: border-color var(--transition-base), background var(--transition-base), color var(--transition-base); }
+.daytype-toggle button.active { border-color: var(--color-primary); background: var(--color-primary-light); color: var(--color-primary); }
+
+.date-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: var(--color-primary-lighter);
+    border-radius: var(--radius-md);
+}
+.date-summary > div { display: flex; flex-direction: column; gap: 2px; }
+.date-summary span { font-size: 11.5px; color: var(--color-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; }
+.date-summary strong { font-size: 14px; color: var(--color-secondary); }
+.date-summary i { color: var(--color-primary); font-size: 13px; }
+
+.price-box { background: var(--color-bg-tertiary); border-radius: var(--radius-md); padding: 16px; margin: 20px 0; }
+.price-box-loading { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--color-text-secondary); }
+.price-box-loading .spinner { width: 16px; height: 16px; border-width: 2px; }
+.price-box-row { display: flex; justify-content: space-between; font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 6px; }
+.price-box-total { display: flex; justify-content: space-between; font-size: 17px; font-weight: 800; color: var(--color-primary); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--color-border-light); }
+.price-box-due-now { font-weight: 700; color: var(--color-secondary); margin-top: 10px; }
+
+.deposit-check { display: flex; align-items: center; gap: 10px; font-size: 13.5px; margin: 16px 0; }
+
+/* ── Today's Offer booking mode ─────────────────────────────────────── */
+.offer-mode-summary { margin-bottom: 8px; }
+.offer-flash-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #1E8E5A; color: #fff;
+    font-size: 12px; font-weight: 800; letter-spacing: 0.02em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 14px;
+    animation: offer-pulse 1.8s ease-in-out infinite;
+}
+@keyframes offer-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(30, 142, 90, 0.35); }
+    50% { box-shadow: 0 0 0 6px rgba(30, 142, 90, 0); }
+}
+.offer-flash-countdown {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 13px; color: var(--color-text-secondary);
+    background: rgba(30, 142, 90, 0.08);
+    border-radius: var(--radius-sm);
+    padding: 9px 12px;
+    margin-bottom: 16px;
+    width: fit-content;
+}
+.offer-flash-countdown strong { color: #146945; font-variant-numeric: tabular-nums; }
+.offer-flash-cta { background: #1E8E5A !important; border-color: #1E8E5A !important; }
+.offer-flash-cta:hover { background: #146945 !important; border-color: #146945 !important; }
+
+.offer-nights-stepper { margin-bottom: 16px; }
+.offer-nights-label { font-size: 12.5px; font-weight: 700; color: var(--color-text-secondary); display: block; margin-bottom: 8px; }
+.offer-nights-control { display: flex; align-items: center; gap: 14px; }
+.offer-nights-control button {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid var(--color-border-light); background: #fff;
+    font-size: 17px; font-weight: 700; color: #146945; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background var(--transition-base);
+}
+.offer-nights-control button:hover:not(:disabled) { background: #E9F8F1; }
+.offer-nights-control button:disabled { opacity: 0.35; cursor: not-allowed; }
+.offer-nights-control strong { font-size: 14px; color: var(--color-secondary); min-width: 80px; text-align: center; }
+.offer-nights-hint { font-size: 11.5px; color: var(--color-text-muted); margin: 8px 0 0; }
+.offer-flash-alt-link {
+    display: block; width: 100%; margin-top: 4px;
+    background: none; border: none; padding: 0;
+    font-size: 12.5px; color: var(--color-primary); text-decoration: underline;
+    text-align: center; cursor: pointer;
+}
+
+.offer-price-box { background: #E9F8F1; border: 1px dashed #1E8E5A; }
+.price-box-strike { color: var(--color-text-muted); font-weight: 500; font-size: 12px; }
+.offer-price-savings span { color: #146945; font-weight: 700; }
+
+.offer-gone-card {
+    max-width: 420px; margin: 40px auto; padding: 40px 30px;
+    text-align: center;
+}
+.offer-gone-card i { font-size: 34px; color: var(--color-text-muted); margin-bottom: 16px; display: block; }
+.offer-gone-card h2 { margin: 0 0 10px; font-size: 18px; color: var(--color-secondary); }
+.offer-gone-card p { margin: 0 0 20px; font-size: 13.5px; color: var(--color-text-secondary); line-height: 1.6; }

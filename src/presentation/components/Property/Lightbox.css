@@ -1,0 +1,97 @@
+.lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(8, 38, 89, 0.94);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    inset-inline-end: 22px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.22); }
+.lightbox-count {
+    position: absolute;
+    top: 24px;
+    inset-inline-start: 24px;
+    color: rgba(255,255,255,0.85);
+    font-size: 13.5px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.12);
+    padding: 6px 14px;
+    border-radius: 999px;
+}
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+.lightbox-nav:hover { background: rgba(255,255,255,0.24); }
+.lightbox-prev { left: 20px; }
+.lightbox-next { right: 20px; }
+.lightbox-stage {
+    max-width: 90vw;
+    max-height: 72vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.lightbox-stage img {
+    max-width: 90vw;
+    max-height: 72vh;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+}
+.lightbox-thumbs {
+    display: flex;
+    gap: 8px;
+    margin-top: 18px;
+    max-width: 90vw;
+    overflow-x: auto;
+    padding: 4px;
+}
+.lightbox-thumb {
+    flex-shrink: 0;
+    width: 62px;
+    height: 46px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 2px solid transparent;
+    padding: 0;
+    opacity: 0.6;
+}
+.lightbox-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.lightbox-thumb.active { border-color: var(--color-accent); opacity: 1; }
+
+@media (max-width: 640px) {
+    .lightbox-nav { width: 38px; height: 38px; font-size: 15px; }
+    .lightbox-prev { left: 8px; }
+    .lightbox-next { right: 8px; }
+    .lightbox-thumbs { display: none; }
+}

@@ -1,0 +1,21 @@
+# SPA deep-link fallback for nginx — same purpose as the included
+# _redirects (Netlify), .htaccess (Apache), web.config (IIS), and
+# vercel.json (Vercel): send any request that isn't a real file on disk
+# to index.html so React Router can render it client-side. Without this,
+# /RequestPay/Success, /chalets/12, etc. 404 instead of loading the app.
+#
+# Not auto-applied anywhere (nginx config lives outside the deployed
+# folder) — copy the relevant piece into the real server block for
+# shleeh.com / www.shleeh.com.
+
+server {
+    listen 80;
+    server_name shleeh.com www.shleeh.com;
+
+    root /path/to/dist;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}

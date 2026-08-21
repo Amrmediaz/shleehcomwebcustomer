@@ -1,0 +1,114 @@
+.property-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border-light);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+    display: flex;
+    flex-direction: column;
+}
+.property-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md);
+    border-color: transparent;
+}
+.property-card-media { position: relative; display: block; aspect-ratio: 4/3; background: var(--color-bg-tertiary); overflow: hidden; }
+.property-card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.property-card:hover .property-card-media img { transform: scale(1.08); }
+.property-card-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(8,38,89,0.42) 100%);
+    pointer-events: none;
+}
+/* Single positioned stack — each badge inside is a normal flow item now,
+   so a type badge + a status/offer badge sit one above the other instead
+   of overlapping at the same absolute spot. */
+.property-card-badges {
+    position: absolute; top: 12px; inset-inline-start: 12px; z-index: 1;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+}
+.property-card-badges .badge { position: static; }
+.badge-soldout {
+    background: rgba(30, 32, 38, 0.88); color: #fff;
+    font-size: 11.5px; font-weight: 700; padding: 5px 10px; border-radius: 999px;
+    display: flex; align-items: center; gap: 5px;
+}
+.badge-soldout i { font-size: 10.5px; }
+.badge-discount {
+    background: #e0245e; color: #fff;
+    font-size: 11.5px; font-weight: 700; padding: 5px 10px; border-radius: 999px;
+}
+.badge-today {
+    background: #1E8E5A; color: #fff;
+    font-size: 11.5px; font-weight: 700; padding: 5px 10px; border-radius: 999px;
+    display: flex; align-items: center; gap: 5px;
+}
+.badge-today i { font-size: 10.5px; }
+.property-card.is-sold-out .property-card-media img { filter: grayscale(55%); opacity: 0.75; }
+.property-card.is-sold-out { opacity: 0.85; }
+.property-card-price-old { color: var(--color-text-muted); font-weight: 500; font-size: 12px; }
+.fav-btn {
+    position: absolute; top: 10px; inset-inline-end: 10px; z-index: 1;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(255,255,255,0.95); border: none;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--color-text-secondary); font-size: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    transition: transform var(--transition-base), color var(--transition-base);
+}
+.fav-btn:hover { transform: scale(1.1); }
+.fav-btn.active { color: #e0245e; }
+.property-card-body { padding: 16px 18px 18px; flex: 1; display: flex; flex-direction: column; }
+.property-card-body h3 { margin: 0 0 4px; font-size: 16px; font-weight: 700; color: var(--color-secondary); }
+.property-card-loc { margin: 0 0 10px; font-size: 13px; color: var(--color-text-muted); display: flex; gap: 6px; align-items: center; }
+.property-card-loc i { color: var(--color-primary); }
+.property-card-facts { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 12px; font-size: 12.5px; color: var(--color-text-secondary); }
+.property-card-facts span { display: flex; align-items: center; gap: 5px; }
+.property-card-facts i { color: var(--color-primary); font-size: 12px; }
+.property-card-footer { margin-top: auto; display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px dashed var(--color-border-light); }
+.property-card-price { font-size: 13px; color: var(--color-text-secondary); }
+.property-card-price strong { color: var(--color-primary); font-size: 17px; font-weight: 800; }
+.property-card-price-note {
+    margin: 3px 0 0; font-size: 10.5px; font-weight: 600; color: #146945;
+    display: flex; align-items: center; gap: 4px;
+}
+.property-card-rating { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; color: #b8860b; background: var(--color-accent-light); padding: 4px 10px; border-radius: 999px; }
+.property-card-rating i { color: var(--color-accent); }
+
+.property-card h3 { transition: color var(--transition-base); }
+.property-card:hover h3 { color: var(--color-primary); }
+
+/* ── Loading skeleton ────────────────────────────────────────────────── */
+.skeleton-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border-light);
+    display: flex;
+    flex-direction: column;
+}
+.skeleton-media { aspect-ratio: 4/3; background: var(--color-bg-tertiary); }
+.skeleton-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px; }
+.skeleton-line { height: 12px; border-radius: 6px; background: var(--color-bg-tertiary); }
+.skeleton-title { width: 70%; height: 15px; }
+.skeleton-loc { width: 45%; }
+.skeleton-footer { width: 55%; margin-top: 8px; }
+.skeleton-media, .skeleton-line {
+    position: relative;
+    overflow: hidden;
+}
+.skeleton-media::after, .skeleton-line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: skeleton-shimmer 1.4s infinite;
+}
+@keyframes skeleton-shimmer {
+    100% { transform: translateX(100%); }
+}
