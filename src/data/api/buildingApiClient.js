@@ -1,7 +1,8 @@
 import { httpClient } from './httpClient.js';
 import {
     BUILDINGS_URL, BUILDINGS_FILTER_URL, BUILDING_DETAILS_URL, FLATS_URL, BUILDINGS_MAP_URL,
-    FLAT_BOOKED_DAYS_URL, FLAT_CALCULATE_PRICE_URL, FLAT_BOOKING_URL, FLAT_PAYMENT_URL,
+    FLAT_BOOKED_DAYS_URL, FLAT_CALCULATE_PRICE_URL, FLAT_BOOKING_URL, FLAT_PAYMENT_URL, FLAT_PAYMENT_QPAY_URL,
+    FLAT_QPAY_SEND_OTP_URL, FLAT_QPAY_CARDS_URL, FLAT_QPAY_CONFIRM_URL,
     FLAT_BOOKINGS_URL, FLAT_BOOKING_DETAILS_URL,
     SPECIAL_PRICES_BASE_URL, FLAT_SPECIAL_PRICES_URL,
 } from '../../core/network/urls.js';
@@ -40,6 +41,29 @@ export const buildingApiClient = {
     },
     async pay(payload) {
         return httpClient.post(FLAT_PAYMENT_URL, { body: payload, auth: true });
+    },
+    // QPay (installments) for flats — same payload shape as the chalet
+    // side. Swap in the real path once confirmed (see FLAT_PAYMENT_QPAY_URL).
+    async payQpay(payload) {
+        return httpClient.post(FLAT_PAYMENT_QPAY_URL, { body: payload, auth: true });
+    },
+    // QPay OTP send/resend — dedicated FlatsCustomer endpoint (CORRECTED
+    // 10 Sep 2026, see FLAT_QPAY_SEND_OTP_URL's comment); payload is
+    // { PaymentNumber, phoneNumber }.
+    async sendQpayOtp(payload) {
+        return httpClient.post(FLAT_QPAY_SEND_OTP_URL, { body: payload, auth: true });
+    },
+    // QPay cards — dedicated FlatsCustomer endpoint (CORRECTED 10 Sep
+    // 2026, see FLAT_QPAY_CARDS_URL's comment); payload is
+    // { paymentNumber, phoneNumber, otp }.
+    async getQpayCards(payload) {
+        return httpClient.post(FLAT_QPAY_CARDS_URL, { body: payload, auth: true });
+    },
+    // QPay confirm — dedicated FlatsCustomer endpoint (CORRECTED 10 Sep
+    // 2026, see FLAT_QPAY_CONFIRM_URL's comment); payload is
+    // { paymentNumber, phoneNumber, otp, PrincipalId, PlanId, account }.
+    async confirmQpay(payload) {
+        return httpClient.post(FLAT_QPAY_CONFIRM_URL, { body: payload, auth: true });
     },
     async myBookings(page, pageSize) {
         return httpClient.post(FLAT_BOOKINGS_URL, { body: { page, pageSize }, auth: true });

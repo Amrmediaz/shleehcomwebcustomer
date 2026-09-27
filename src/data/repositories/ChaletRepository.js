@@ -66,6 +66,26 @@ export const ChaletRepository = {
         if (data?.status) return data.message;
         throw new Error(data?.message || 'Failed to start payment');
     },
+    async payQpay(payload) {
+        const data = await chaletApiClient.payQpay(payload);
+        if (data?.status) return data.message;
+        throw new Error(data?.message || 'Failed to start QPay payment');
+    },
+    async sendQpayOtp(payload) {
+        const data = await chaletApiClient.sendQpayOtp(payload);
+        if (data?.status) return data.message;
+        throw new Error(data?.message || 'Failed to send verification code');
+    },
+    async getQpayCards(payload) {
+        const data = await chaletApiClient.getQpayCards(payload);
+        if (data?.status) return data.message;
+        throw new Error(data?.message || 'Failed to load cards');
+    },
+    async confirmQpay(payload) {
+        const data = await chaletApiClient.confirmQpay(payload);
+        if (data?.status) return data.message;
+        throw new Error(data?.message || 'Failed to confirm payment');
+    },
     async myBookings(page, pageSize) {
         const data = await chaletApiClient.myBookings(page, pageSize);
         const message = data?.message || {};

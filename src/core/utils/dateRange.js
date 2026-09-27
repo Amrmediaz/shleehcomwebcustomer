@@ -77,6 +77,21 @@ export function formatDdMmYyyy(str, lang) {
     return new Intl.DateTimeFormat(lang === 'ar' ? 'ar' : 'en', { day: 'numeric', month: 'short', year: 'numeric' }).format(d);
 }
 
+// Formats the *checkout* date for display given the LAST entry of a
+// booking's bookingDays list. bookingDays holds one entry per occupied
+// NIGHT (mirrors eachDay()'s convention above and chaletbookingdatehelper.dart:
+// a stay from checkin -> checkout produces days [checkin, ..., checkout - 1
+// night]), so the actual checkout date the guest leaves on is the day AFTER
+// the last occupied night, not the last entry itself. E.g. a 2-night stay
+// starting 29 Dec has bookingDays [29, 30] and checks out on the 31st, not
+// the 30th. Falls back to the raw string if it doesn't parse.
+export function formatCheckoutDdMmYyyy(str, lang) {
+    const d = parseDdMmYyyy(str);
+    if (!d || Number.isNaN(d.getTime())) return str;
+    d.setDate(d.getDate() + 1);
+    return new Intl.DateTimeFormat(lang === 'ar' ? 'ar' : 'en', { day: 'numeric', month: 'short', year: 'numeric' }).format(d);
+}
+
 // Normalizes the special/discounted-price API response (an array of
 // { startDate, endDate, price, type } with 'dd/MM/yyyy' strings — mirrors
 // chalet_booking_date_widget.dart's SpecialPriceModel) into a simpler

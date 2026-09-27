@@ -5,7 +5,7 @@ import { GetChaletBookingDetailsUseCase, GetChaletDetailsUseCase } from '../../c
 import { GetFlatBookingDetailsUseCase } from '../../core/useCases/BuildingUseCases.js';
 import { PENDING_PAYMENT_KEY } from '../../core/network/keys.js';
 import { getWilayatLabel, getGovernorateLabel, getDisplayName } from '../../core/utils/constants.js';
-import { formatDdMmYyyy } from '../../core/utils/dateRange.js';
+import { formatDdMmYyyy, formatCheckoutDdMmYyyy } from '../../core/utils/dateRange.js';
 import { LoadingState } from '../components/Property/StateViews.jsx';
 import './PaymentResult.css';
 
@@ -93,7 +93,7 @@ export default function PaymentSuccessPage() {
                         {lastDay && lastDay !== firstDay && (
                             <div className="payresult-row">
                                 <span>{t('check_out')}</span>
-                                <strong>{formatDdMmYyyy(lastDay, lang)}</strong>
+                                <strong>{formatCheckoutDdMmYyyy(lastDay, lang)}</strong>
                             </div>
                         )}
                         {booking.current_paid && (

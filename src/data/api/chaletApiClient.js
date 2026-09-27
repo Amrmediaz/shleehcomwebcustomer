@@ -1,7 +1,8 @@
 import { httpClient } from './httpClient.js';
 import {
     CHALETS_FILTER_URL, CHALETS_FILTER_DATE_URL, CHALET_DETAILS_URL, CHALET_BOOKED_DAYS_URL, CHALETS_MAP_URL,
-    CHALET_CALCULATE_PRICE_URL, CHALET_BOOKING_URL, CHALET_PAYMENT_URL,
+    CHALET_CALCULATE_PRICE_URL, CHALET_BOOKING_URL, CHALET_PAYMENT_URL, CHALET_PAYMENT_QPAY_URL, QPAY_SEND_OTP_URL,
+    QPAY_CARDS_URL, QPAY_CONFIRM_URL,
     CHALET_BOOKINGS_URL, CHALET_BOOKING_DETAILS_URL,
     SPECIAL_PRICES_BASE_URL, CHALET_SPECIAL_PRICES_URL,
 } from '../../core/network/urls.js';
@@ -54,6 +55,28 @@ export const chaletApiClient = {
     },
     async pay(payload) {
         return httpClient.post(CHALET_PAYMENT_URL, { body: payload, auth: true });
+    },
+    // QPay (installments) — payload is { bookingId, paymentType, phoneNumber }
+    // (BookingPaymentQpay on the backend) — CONFIRMED shape, see
+    // CHALET_PAYMENT_QPAY_URL's comment.
+    async payQpay(payload) {
+        return httpClient.post(CHALET_PAYMENT_QPAY_URL, { body: payload, auth: true });
+    },
+    // QPay OTP send/resend — payload is { PaymentNumber, phoneNumber }
+    // (note the mixed casing — CONFIRMED exactly as the backend expects it).
+    async sendQpayOtp(payload) {
+        return httpClient.post(QPAY_SEND_OTP_URL, { body: payload, auth: true });
+    },
+    // QPay cards — payload is { paymentNumber, phoneNumber, otp }. CONFIRMED
+    // exactly as the backend expects it, see QPAY_CARDS_URL's comment.
+    async getQpayCards(payload) {
+        return httpClient.post(QPAY_CARDS_URL, { body: payload, auth: true });
+    },
+    // QPay confirm — payload is { paymentNumber, phoneNumber, otp,
+    // principalId, planId, account }. CONFIRMED exactly as the backend
+    // expects it, see QPAY_CONFIRM_URL's comment.
+    async confirmQpay(payload) {
+        return httpClient.post(QPAY_CONFIRM_URL, { body: payload, auth: true });
     },
     async myBookings(page, pageSize) {
         return httpClient.post(CHALET_BOOKINGS_URL, { body: { page, pageSize }, auth: true });

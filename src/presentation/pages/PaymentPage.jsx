@@ -19,6 +19,7 @@ function startedKey(bookingId) {
 }
 
 // status machine:
+//   choose   -> let the user pick "pay now" (bank) or QPay (installments)
 //   loading  -> fetching the bank gateway URL from our backend
 //   ready    -> URL in hand, waiting on the user to tap "Pay"
 //   opening  -> popup opened, polling it for the bank's return redirect
@@ -32,7 +33,7 @@ export default function PaymentPage() {
     const navigate = useNavigate();
     const { bookingId, isChalet } = location.state || {};
     const [paymentUrl, setPaymentUrl] = useState(null);
-    const [status, setStatus] = useState('loading');
+    const [status, setStatus] = useState('choose');
     const cleanupRef = useRef(null);
 
     const resolvePayment = (outcome) => {
@@ -83,11 +84,17 @@ export default function PaymentPage() {
         }
     };
 
+    // No auto-start here anymore — the user now picks a payment method
+    // first (see the 'choose' screen below); startPayment() only runs once
+    // they tap "Pay now" (bank/card). Still clean up the popup poller on
+    // unmount either way.
     useEffect(() => {
-        startPayment();
         return () => { if (cleanupRef.current) cleanupRef.current(); };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [bookingId]);
+    }, []);
+
+    const goToQpay = () => {
+        navigate('/booking/pay/qpay', { state: { bookingId, isChalet } });
+    };
 
     if (!bookingId) {
         return (
@@ -108,6 +115,39 @@ export default function PaymentPage() {
                     <Link className="btn btn-primary btn-block" to="/my-bookings">{t('view_my_bookings')}</Link>
                     <button type="button" className="btn btn-outline btn-block" style={{ marginTop: 10 }} onClick={() => startPayment(true)}>
                         {t('try_again')}
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    if (status === 'choose') {
+        return (
+            <div className="container booking-page">
+                <div className="card" style={{ textAlign: 'left' }}>
+                    <h2 style={{ marginBottom: 6 }}>{t('choose_payment_method_title')}</h2>
+                    <p style={{ marginBottom: 20, color: 'var(--color-text-secondary)' }}>
+                        {t('choose_payment_method_sub', { id: bookingId })}
+                    </p>
+
+                    <button
+                        type="button"
+                        className="btn btn-primary btn-block"
+                        style={{ textAlign: 'left', padding: '14px 18px', marginBottom: 12 }}
+                        onClick={() => startPayment()}
+                    >
+                        <span style={{ display: 'block', fontWeight: 700 }}>{t('pay_now_bank_label')}</span>
+                        <span style={{ display: 'block', fontWeight: 400, fontSize: 12.5, opacity: 0.9 }}>{t('pay_now_bank_desc')}</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        className="btn btn-outline btn-block"
+                        style={{ textAlign: 'left', padding: '14px 18px' }}
+                        onClick={goToQpay}
+                    >
+                        <span style={{ display: 'block', fontWeight: 700 }}>{t('pay_qpay_label')}</span>
+                        <span style={{ display: 'block', fontWeight: 400, fontSize: 12.5, opacity: 0.8 }}>{t('pay_qpay_desc')}</span>
                     </button>
                 </div>
             </div>

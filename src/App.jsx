@@ -14,6 +14,7 @@ import BuildingDetailPage from './presentation/pages/BuildingDetailPage.jsx';
 import FlatBookingPage from './presentation/pages/FlatBookingPage.jsx';
 import BookingSuccessPage from './presentation/pages/BookingSuccessPage.jsx';
 import PaymentPage from './presentation/pages/PaymentPage.jsx';
+import QpayCheckoutPage from './presentation/pages/QpayCheckoutPage.jsx';
 import PaymentSuccessPage from './presentation/pages/PaymentSuccessPage.jsx';
 import PaymentFailPage from './presentation/pages/PaymentFailPage.jsx';
 import FavoritesPage from './presentation/pages/FavoritesPage.jsx';
@@ -68,6 +69,10 @@ export default function App() {
 
                     <Route path="/booking/success" element={<BookingSuccessPage />} />
                     <Route path="/booking/pay" element={<PaymentPage />} />
+                    {/* Installment payment (QPay) — a second payment method next
+                        to the bank/card flow above, offered as a choice on
+                        PaymentPage.jsx. */}
+                    <Route path="/booking/pay/qpay" element={<QpayCheckoutPage />} />
                     {/* Our own branded result pages — this is where the bank-redirect
                         paths below send the browser on to. */}
                     <Route path="/payment-success" element={<PaymentSuccessPage />} />

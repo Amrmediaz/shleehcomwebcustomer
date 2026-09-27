@@ -28,6 +28,33 @@ export const PayChaletBookingUseCase = {
     execute: (payload) => ChaletRepository.pay(payload),
 };
 
+// QPay (installments). payload: { bookingId, paymentType, phoneNumber } —
+// CONFIRMED shape against a real BookingPaymentQpay response (23 Aug 2026).
+// Resolves to { plansList, principalId, paymentNumber } on success — see
+// QpayCheckoutPage.jsx.
+export const PayChaletBookingQpayUseCase = {
+    execute: (payload) => ChaletRepository.payQpay(payload),
+};
+
+// QPay OTP send/resend. payload: { PaymentNumber, phoneNumber } — CONFIRMED
+// (23 Aug 2026). Resolves to a plain string message ("Otp Sended") on success.
+export const SendQpayOtpUseCase = {
+    execute: (payload) => ChaletRepository.sendQpayOtp(payload),
+};
+
+// QPay cards. payload: { paymentNumber, phoneNumber, otp } — CONFIRMED
+// (Ahmed Younes, 24 Aug 2026). Resolves to the card list to charge.
+export const GetQpayCardsUseCase = {
+    execute: (payload) => ChaletRepository.getQpayCards(payload),
+};
+
+// QPay confirm — the final charge step. payload: { paymentNumber,
+// phoneNumber, otp, principalId, planId, account } — CONFIRMED (Ahmed
+// Younes, 24 Aug 2026).
+export const ConfirmQpayUseCase = {
+    execute: (payload) => ChaletRepository.confirmQpay(payload),
+};
+
 export const GetMyChaletBookingsUseCase = {
     execute: (page, pageSize) => ChaletRepository.myBookings(page, pageSize),
 };

@@ -38,3 +38,18 @@
 .payresult-row.payresult-total strong { color: var(--color-primary); font-size: 16px; }
 
 .payresult-actions { display: flex; flex-direction: column; gap: 10px; }
+
+/* QPay installment loan reference card — matches the purple used for the
+   QPay installments payment-method badge elsewhere (#7C3AED). */
+.qpay-loan-card {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding: 12px;
+    border-radius: var(--radius-md);
+    background: rgba(124, 58, 237, 0.06);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+}
+.qpay-loan-card__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.qpay-loan-card__label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: #7C3AED; }
+.qpay-loan-card__row strong { color: #7C3AED; font-weight: 900; }
+.qpay-loan-card__note { margin: 6px 0 0; font-size: 12.5px; line-height: 1.4; color: var(--color-text-secondary); }

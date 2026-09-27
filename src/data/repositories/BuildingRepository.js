@@ -56,6 +56,26 @@ export const BuildingRepository = {
         if (data?.status) return data.message;
         throw new Error(data?.message || 'Failed to start payment');
     },
+    async payQpay(payload) {
+        const data = await buildingApiClient.payQpay(payload);
+        if (data?.status) return data.message;
+        throw new Error(data?.message || 'Failed to start QPay payment');
+    },
+    async sendQpayOtp(payload) {
+        const data = await buildingApiClient.sendQpayOtp(payload);
+        if (data?.status) return data.message;
+        throw new Error(data?.message || 'Failed to send verification code');
+    },
+    async getQpayCards(payload) {
+        const data = await buildingApiClient.getQpayCards(payload);
+        if (data?.status) return data.message;
+        throw new Error(data?.message || 'Failed to load cards');
+    },
+    async confirmQpay(payload) {
+        const data = await buildingApiClient.confirmQpay(payload);
+        if (data?.status) return data.message;
+        throw new Error(data?.message || 'Failed to confirm payment');
+    },
     async myBookings(page, pageSize) {
         const data = await buildingApiClient.myBookings(page, pageSize);
         const message = data?.message || {};

@@ -4,9 +4,9 @@ import { useTranslation } from '../context/LanguageContext.jsx';
 import { GetChaletBookingDetailsUseCase, GetChaletDetailsUseCase } from '../../core/useCases/ChaletUseCases.js';
 import { GetFlatBookingDetailsUseCase } from '../../core/useCases/BuildingUseCases.js';
 import { getWilayatLabel, getGovernorateLabel, getDisplayName } from '../../core/utils/constants.js';
-import { formatDdMmYyyy } from '../../core/utils/dateRange.js';
+import { formatDdMmYyyy, formatCheckoutDdMmYyyy } from '../../core/utils/dateRange.js';
 import { LoadingState } from '../components/Property/StateViews.jsx';
-import { isPending, bookingName } from './MyBookingsPage.jsx';
+import { isPending, bookingName, paymentMethodLabel } from './MyBookingsPage.jsx';
 import './PaymentResult.css';
 import './MyBookingsPage.css';
 
@@ -19,6 +19,12 @@ export default function BookingDetailPage() {
     const { id } = useParams();
     const [searchParams] = useSearchParams();
     const isChalet = searchParams.get('type') !== 'building';
+    // Carried over from MyBookingsPage's link (?status=b.bookingstatus) —
+    // the details endpoint itself doesn't return bookingstatus, so this is
+    // the one reliable source of the real paid/pending state. Falls back
+    // to isPending(booking) below only for a direct/bookmarked visit that
+    // has no status param at all.
+    const statusParam = searchParams.get('status');
     const { t, lang } = useTranslation();
     const navigate = useNavigate();
 
@@ -70,7 +76,9 @@ export default function BookingDetailPage() {
     const firstDay = days?.[0]?.day;
     const lastDay = days?.[days.length - 1]?.day;
     const nights = booking.noOFDays ?? booking.noOfDays ?? 0;
-    const pending = isPending(booking);
+    const pending = statusParam !== null && statusParam !== ''
+        ? Number(statusParam) === 0
+        : isPending(booking);
     const propertyName = bookingName(booking, lang)
         || (property ? getDisplayName(property, lang) : '')
         || `${t(isChalet ? 'chalets' : 'buildings')} #${booking.buildingID ?? booking.flatID ?? ''}`;
@@ -116,7 +124,7 @@ export default function BookingDetailPage() {
                     {lastDay && lastDay !== firstDay && (
                         <div className="payresult-row">
                             <span>{t('check_out')}</span>
-                            <strong>{formatDdMmYyyy(lastDay, lang)}</strong>
+                            <strong>{formatCheckoutDdMmYyyy(lastDay, lang)}</strong>
                         </div>
                     )}
                     {nights > 0 && (
@@ -162,6 +170,12 @@ export default function BookingDetailPage() {
                             <strong>{booking.current_paid} {t('omr')}</strong>
                         </div>
                     )}
+                    {paymentMethodLabel(booking, t) && (
+                        <div className="payresult-row">
+                            <span>{t('payment_method')}</span>
+                            <strong>{paymentMethodLabel(booking, t)}</strong>
+                        </div>
+                    )}
                     {Number(booking.remaining_paid) > 0 && (
                         <div className="payresult-row">
                             <span>{t('due_on_arrival')}</span>
@@ -173,6 +187,23 @@ export default function BookingDetailPage() {
                         <strong>{booking.coast} {t('omr')}</strong>
                     </div>
                 </div>
+
+                {/* QPay installment loan reference — only present once the
+                    booking has actually been confirmed via BookingQpayConfirm
+                    (isLoan true + a non-empty loanId). Shown so the customer
+                    has something concrete to quote QPay if they need to
+                    follow up directly. */}
+                {booking.isLoan === true && booking.loanId && (
+                    <div className="qpay-loan-card">
+                        <div className="qpay-loan-card__row">
+                            <span className="qpay-loan-card__label">
+                                <i className="fa-solid fa-calendar-days"></i> {t('qpay_loan_id_label')}
+                            </span>
+                            <strong dir="ltr">{booking.loanId}</strong>
+                        </div>
+                        <p className="qpay-loan-card__note">{t('qpay_loan_id_note')}</p>
+                    </div>
+                )}
 
                 <div className="payresult-actions">
                     {pending && (

@@ -65,6 +65,15 @@
 .booking-payment-box.paid div { display: flex; flex-direction: column; gap: 2px; }
 .booking-payment-box.paid strong { font-size: 14px; }
 .booking-payment-box.paid span { font-size: 12.5px; opacity: 0.85; }
+.booking-payment-box.paid .booking-payment-method {
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-top: 2px; width: fit-content;
+    background: rgba(30, 142, 90, 0.14);
+    color: #1E8E5A;
+    font-size: 11px; font-weight: 700;
+    padding: 3px 8px; border-radius: 20px;
+    opacity: 1;
+}
 
 @media (max-width: 480px) {
     .booking-payment-box.pending { flex-direction: column; align-items: stretch; }

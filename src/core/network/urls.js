@@ -23,6 +23,37 @@ export const CHALET_BOOKED_DAYS_URL = '/api/CustomerData/GetBookingDays';
 export const CHALET_CALCULATE_PRICE_URL = '/api/CustomerData/CalculateBuldingPrices';
 export const CHALET_BOOKING_URL = '/api/CustomerData/AddBooking';
 export const CHALET_PAYMENT_URL = '/api/CustomerData/BookingPayment';
+// QPay (installment) payment — CONFIRMED against a real backend response
+// (Amr, 23 Aug 2026): POST { bookingId, paymentType: 3, phoneNumber } ->
+// { status, message: { plansList, principalId, paymentNumber } }. See
+// QpayCheckoutPage.jsx for how the response is consumed. Same API_URL
+// (shleeh.com) as every other endpoint above — no separate host/env for
+// QPay. Backend test deploy expected 24 Aug 2026.
+export const CHALET_PAYMENT_QPAY_URL = '/api/CustomerData/BookingPaymentQpay';
+// QPay OTP — send/resend a verification code for an in-progress QPay
+// application. CONFIRMED (Amr, 23 Aug 2026): POST { PaymentNumber, phoneNumber }
+// -> { status, message: 'Otp Sended' }.
+// CORRECTED (10 Sep 2026, per the real Swagger list): this is NOT shared
+// with buildings/flats like CHALET_PAYMENT_QPAY_URL wrongly assumed — there
+// is a separate /api/FlatsCustomer/HotelBookingQpayOTP for those, same as
+// every other FlatsCustomer/CustomerData split in this file. See
+// FLAT_QPAY_SEND_OTP_URL below.
+export const QPAY_SEND_OTP_URL = '/api/CustomerData/BookingQpayOTP';
+// QPay cards — verifies the OTP and returns the customer's saved QPay cards
+// to choose from for the actual charge. CONFIRMED (Ahmed Younes, 24 Aug
+// 2026): POST { paymentNumber, phoneNumber, otp } -> card list.
+// CORRECTED (10 Sep 2026): also split by booking type, see
+// FLAT_QPAY_CARDS_URL below — was wrongly treated as shared.
+export const QPAY_CARDS_URL = '/api/CustomerData/BookingQpayCards';
+// QPay confirm — the final step that actually charges the selected card.
+// CONFIRMED (Ahmed Younes, 24 Aug 2026): POST { paymentNumber, phoneNumber,
+// otp, PrincipalId, PlanId, account } — note PrincipalId/PlanId are
+// PascalCase while everything else stays lowercase (CONFIRMED 10 Sep 2026).
+// "account" is the identifier of the card chosen on the previous
+// (BookingQpayCards) step.
+// CORRECTED (10 Sep 2026): also split by booking type, see
+// FLAT_QPAY_CONFIRM_URL below — was wrongly treated as shared.
+export const QPAY_CONFIRM_URL = '/api/CustomerData/BookingQpayConfirm';
 export const CHALET_BOOKINGS_URL = '/api/CustomerData/GetBookingList';
 export const CHALET_BOOKING_DETAILS_URL = '/api/CustomerData/GetBookingDetailes';
 
@@ -45,6 +76,17 @@ export const FLAT_BOOKED_DAYS_URL = '/api/FlatsCustomer/GetFlatBookingDays';
 export const FLAT_CALCULATE_PRICE_URL = '/api/FlatsCustomer/CalculateFlatPrices';
 export const FLAT_BOOKING_URL = '/api/FlatsCustomer/AddBookingHotel';
 export const FLAT_PAYMENT_URL = '/api/FlatsCustomer/HotelBookingPayment';
+// QPay (installment) payment for flats — same placeholder-until-confirmed
+// situation as CHALET_PAYMENT_QPAY_URL above.
+export const FLAT_PAYMENT_QPAY_URL = '/api/FlatsCustomer/HotelBookingPaymentQpay';
+// QPay OTP/cards/confirm for flats — CONFIRMED against the real Swagger
+// listing (10 Sep 2026) as dedicated FlatsCustomer endpoints, mirroring
+// FLAT_PAYMENT_QPAY_URL above. Same request/response shapes as their
+// CustomerData counterparts (QPAY_SEND_OTP_URL/QPAY_CARDS_URL/
+// QPAY_CONFIRM_URL) — only the host path differs.
+export const FLAT_QPAY_SEND_OTP_URL = '/api/FlatsCustomer/HotelBookingQpayOTP';
+export const FLAT_QPAY_CARDS_URL = '/api/FlatsCustomer/HotelBookingQpayCards';
+export const FLAT_QPAY_CONFIRM_URL = '/api/FlatsCustomer/HotelBookingQpayConfirm';
 export const FLAT_BOOKINGS_URL = '/api/FlatsCustomer/GetBookingList';
 export const FLAT_BOOKING_DETAILS_URL = '/api/FlatsCustomer/GetBookingDetailes';
 

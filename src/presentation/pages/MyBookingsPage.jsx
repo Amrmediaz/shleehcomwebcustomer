@@ -21,6 +21,18 @@ export function isPending(b) {
     return Number(b.bookingstatus) === 0;
 }
 
+// paymentType from the booking API: 1 = normal online bank payment, 3 =
+// QPay installments (same values sent to BookingPayment/BookingPaymentQpay
+// when the booking was paid). Returns null for anything else (including
+// missing/older bookings) — showing a guessed label would be worse than
+// showing nothing.
+export function paymentMethodLabel(b, t) {
+    const type = Number(b.paymentType);
+    if (type === 1) return t('payment_method_online');
+    if (type === 3) return t('payment_method_qpay');
+    return null;
+}
+
 export function bookingName(b, lang) {
     // The real app inconsistently picks buildingNameEn for chalets and
     // buildingNameAr for flats regardless of the app's language (looks like
@@ -39,7 +51,14 @@ function BookingCard({ b, index, isChalet, lang, t, navigate }) {
     const nights = b.noOFDays ?? b.noOfDays ?? 0;
     const total = b.coast ?? b.total ?? 0;
 
-    const openDetails = () => navigate(`/my-bookings/${b.id}?type=${isChalet ? 'chalet' : 'building'}`);
+    // Carry the real paid/pending status along in the URL — the booking
+    // DETAILS endpoint doesn't actually return `bookingstatus` (confirmed
+    // against the Flutter app's BookingDetailsModel, which never parses
+    // it), so without this every booking silently defaulted to "paid" on
+    // the details page regardless of its real status. The list response
+    // is the one place this field is reliably present, so it has to be
+    // handed off here rather than re-derived on the details page.
+    const openDetails = () => navigate(`/my-bookings/${b.id}?type=${isChalet ? 'chalet' : 'building'}&status=${b.bookingstatus}`);
 
     return (
         <div
@@ -89,6 +108,9 @@ function BookingCard({ b, index, isChalet, lang, t, navigate }) {
                     <div>
                         <strong>{t('booking_paid')}</strong>
                         <span>{total} {t('omr')}</span>
+                        {paymentMethodLabel(b, t) && (
+                            <span className="booking-payment-method">{paymentMethodLabel(b, t)}</span>
+                        )}
                     </div>
                 </div>
             )}
